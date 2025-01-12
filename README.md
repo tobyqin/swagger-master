@@ -9,12 +9,13 @@
 
 <p align="center">
   <a href="#features">Features</a> •
+  <a href="#screenshot">Screenshot</a> •
   <a href="#demo">Demo</a> •
   <a href="#quick-start">Quick Start</a> •
-  <a href="#usage">Usage</a> •
   <a href="#customization">Customization</a> •
-  <a href="#deployment">Deployment</a> •
-  <a href="#contributing">Contributing</a>
+  <a href="#contributing">Contributing</a> •
+  <a href="#license">License</a> •
+  <a href="#acknowledgments">Acknowledgments</a>
 </p>
 
 <p align="center">
