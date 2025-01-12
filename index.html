@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swagger Master Page</title>
+    
+    <!-- Swagger UI CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@5.11.8/swagger-ui.css">
+    
+    <!-- Add Font Awesome for the info icon -->
+    <link rel="stylesheet" href="https://unpkg.com/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        
+        #api-selector {
+            position: fixed;
+            top: 0;
+            right: 20px;
+            z-index: 1000;
+            padding: 10px 15px;
+            background: white;
+            border-radius: 0 0 5px 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            max-width: 600px;
+        }
+        
+        #api-selector label {
+            font-size: 14px;
+            color: #3b4151;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        
+        select {
+            padding: 5px;
+            font-size: 14px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        
+        #swagger-ui {
+            margin-top: 40px;
+        }
+        
+        .info-icon {
+            color: #49cc90;
+            font-size: 16px;
+        }
+    </style>
+    
+    <!-- API Configuration - Customize your API list here -->
+    <script>
+        /* 
+         * API List Configuration Guide:
+         * -----------------------------
+         * Add your APIs to this list in the following format:
+         * {
+         *     name: 'Display Name for the API',
+         *     url: 'https://path/to/your/openapi.json'
+         * }
+         */
+        const API_LIST = [
+            {
+                name: 'This is the Petstore API',
+                url: 'https://petstore3.swagger.io/api/v3/openapi.json'
+            },
+            {
+                name: 'Sample API 1',
+                url: 'https://example.com/api1/openapi.json'
+            },
+            {
+                name: 'Sample API 2',
+                url: 'https://example.com/api2/openapi.json'
+            },
+            {
+                name: 'Sample API 3',
+                url: 'https://example.com/api3/openapi.json'
+            }
+        ];
+    </script>
+</head>
+<body>
+    <div id="api-selector">
+        <i class="fas fa-info-circle info-icon"></i>
+        <label for="api-select">Welcome to Swagger Master, Select API:</label>
+        <select id="api-select" onchange="loadAPI()">
+        </select>
+    </div>
+    
+    <div id="swagger-ui"></div>
+
+    <!-- Swagger UI Bundle -->
+    <script src="https://unpkg.com/swagger-ui-dist@5.11.8/swagger-ui-bundle.js"></script>
+    <script src="https://unpkg.com/swagger-ui-dist@5.11.8/swagger-ui-standalone-preset.js"></script>
+    
+    <script>
+        // Populate select options
+        const select = document.getElementById('api-select');
+        API_LIST.forEach(api => {
+            const option = document.createElement('option');
+            option.value = api.url;
+            option.textContent = api.name;
+            select.appendChild(option);
+        });
+
+        // Initialize Swagger UI configuration
+        let ui = SwaggerUIBundle({
+            url: API_LIST[0].url,
+            dom_id: '#swagger-ui',
+            deepLinking: true,
+            presets: [
+                SwaggerUIBundle.presets.apis,
+                SwaggerUIStandalonePreset
+            ],
+            plugins: [
+                SwaggerUIBundle.plugins.DownloadUrl
+            ]
+        });
+
+        // Function to load selected API
+        function loadAPI() {
+            const select = document.getElementById('api-select');
+            const selectedUrl = select.value;
+            
+            if (!selectedUrl.startsWith('http')) {
+                alert('Invalid API URL');
+                return;
+            }
+
+            ui = SwaggerUIBundle({
+                url: selectedUrl,
+                dom_id: '#swagger-ui',
+                deepLinking: true,
+                presets: [
+                    SwaggerUIBundle.presets.apis,
+                    SwaggerUIStandalonePreset
+                ],
+                plugins: [
+                    SwaggerUIBundle.plugins.DownloadUrl
+                ]
+            });
+        }
+    </script>
+</body>
+</html> 
