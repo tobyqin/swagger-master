@@ -56,6 +56,11 @@
             color: #49cc90;
             font-size: 16px;
         }
+        
+        #api-selector label a:hover {
+            text-decoration: underline;
+            opacity: 0.9;
+        }
     </style>
     
     <!-- API Configuration - Customize your API list here -->
@@ -92,7 +97,7 @@
 <body>
     <div id="api-selector">
         <i class="fas fa-info-circle info-icon"></i>
-        <label for="api-select">Welcome to Swagger Master, Select API:</label>
+        <label for="api-select">Welcome to <a href="https://github.com/tobyqin/swagger-master" target="_blank" style="color: #49cc90; text-decoration: none;">Swagger Master</a>, Select API:</label>
         <select id="api-select" onchange="loadAPI()">
         </select>
     </div>
