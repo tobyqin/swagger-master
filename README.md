@@ -1,5 +1,9 @@
 # Swagger Master
 
+<p align="right">
+  <a href="README.zh-CN.md">中文文档</a>
+</p>
+
 <p align="center">
   <img src="docs/images/swagger-master-logo.svg" alt="Swagger Master Logo" width="200"/>
   <br>
