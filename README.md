@@ -30,6 +30,10 @@
   </a>
 </p>
 
+<p align="center">
+  ⭐️ If you find this project useful, please consider giving it a star to show your support! ⭐️
+</p>
+
 ## Features
 
 - 📦 **Single File** - No build process, no dependencies to install
