@@ -17,35 +17,47 @@
             padding: 0;
         }
         
-        #api-selector {
+        .api-selector {
             position: fixed;
             top: 20px;
             right: 20px;
             z-index: 1000;
-            padding: 10px 15px;
             background: #222;
-            border-radius: 5px 5px 5px 5px;
+            border-radius: 5px;
             box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+            padding: 10px 15px;
             display: flex;
             align-items: center;
             gap: 8px;
-            max-width: 600px;
+            white-space: nowrap;
+            width: 460px;
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
         }
         
         #api-selector label {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, 
-                         "Helvetica Neue", Arial, sans-serif;
-            font-size: 14px;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
             color: white;
-            font-weight: 600;
             white-space: nowrap;
         }
         
         select {
             padding: 5px;
-            font-size: 14px;
             border-radius: 4px;
             border: 1px solid #ccc;
+            flex-grow: 1;
+            min-width: 150px;
+            width: auto;
+            color: white;
+            background: #333;
+            border-color: #444;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        select option {
+            background: #333;
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
         }
         
         #swagger-ui {
@@ -55,11 +67,44 @@
         .info-icon {
             color: #49cc90;
             font-size: 16px;
+            cursor: pointer;
         }
-        
-        #api-selector label a:hover {
+
+        .info-icon:hover {
+            opacity: 0.8;
+        }
+
+        .api-info {
+            position: fixed;
+            top: 85px;
+            right: 20px;
+            z-index: 1000;
+            background: #222;
+            border-radius: 5px;
+            box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+            padding: 10px 15px;
+            color: white;
+            font-size: 13px;
+            line-height: 1.5;
+            display: none;
+            width: 490px;
+            box-sizing: border-box;
+            word-wrap: break-word;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        .api-info p {
+            margin: 5px 0;
+            width: 100%;
+        }
+
+        .api-info a {
+            color: #49cc90;
+            text-decoration: none;
+        }
+
+        .api-info a:hover {
             text-decoration: underline;
-            opacity: 0.9;
         }
     </style>
     
@@ -77,29 +122,54 @@
         const API_LIST = [
             {
                 name: 'Petstore API',
-                url: 'https://petstore3.swagger.io/api/v3/openapi.json'
+                url: 'https://petstore3.swagger.io/api/v3/openapi.json',
+                description: 'This is the Swagger Petstore API, a sample API that uses a petstore as an example to demonstrate features in the OpenAPI specification.',
+                maintainer: {
+                    name: 'Swagger Team',
+                    email: 'swagger@example.com'
+                }
             },
             {
-                name: 'Sample API 1',
-                url: 'https://example.com/api1/openapi.json'
+                name: 'Sample API 1 - long long long name',
+                url: 'https://example.com/api1/openapi.json',
+                description: 'Description for Sample API 1.',
+                maintainer: {
+                    name: 'Sample Maintainer 1',
+                    email: 'maintainer1@example.com'
+                }
             },
             {
                 name: 'Sample API 2',
-                url: 'https://example.com/api2/openapi.json'
+                url: 'https://example.com/api2/openapi.json',
+                description: 'Description for Sample API 2.',
+                maintainer: {
+                    name: 'Sample Maintainer 2',
+                    email: 'maintainer2@example.com'
+                }
             },
             {
                 name: 'Sample API 3',
-                url: 'https://example.com/api3/openapi.json'
+                url: 'https://example.com/api3/openapi.json',
+                description: 'Description for Sample API 3.',
+                maintainer: {
+                    name: 'Sample Maintainer 3',
+                    email: 'maintainer3@example.com'
+                }
             }
         ];
     </script>
 </head>
 <body>
-    <div id="api-selector">
-        <i class="fas fa-info-circle info-icon"></i>
-        <label for="api-select">Welcome to <a href="https://github.com/tobyqin/swagger-master" target="_blank" style="color: #49cc90; text-decoration: none;">Swagger Master</a>, Select API:</label>
+    <div class="api-selector">
+        <i class="fas fa-info-circle info-icon" title="Click to view API details" onclick="toggleInfo()"></i>
+        <label for="api-select">Welcome to <a href="https://github.com/tobyqin/swagger-master" target="_blank" style="color: #49cc90; text-decoration: none;">Swagger Master</a>, view API:</label>
         <select id="api-select" onchange="loadAPI()">
         </select>
+    </div>
+
+    <div class="api-info">
+        <p id="api-description"></p>
+        <p id="api-maintainer"></p>
     </div>
     
     <div id="swagger-ui"></div>
@@ -136,6 +206,7 @@
         function loadAPI() {
             const select = document.getElementById('api-select');
             const selectedUrl = select.value;
+            const selectedApi = API_LIST.find(api => api.url === selectedUrl);
             
             if (!selectedUrl.startsWith('http')) {
                 alert('Invalid API URL');
@@ -154,7 +225,19 @@
                     SwaggerUIBundle.plugins.DownloadUrl
                 ]
             });
+
+            // Update API info
+            document.getElementById('api-description').textContent = selectedApi.description;
+            document.getElementById('api-maintainer').innerHTML = `Maintainer: <a href="mailto:${selectedApi.maintainer.email}">${selectedApi.maintainer.name}</a>`;
         }
+
+        function toggleInfo() {
+            const infoDiv = document.querySelector('.api-info');
+            infoDiv.style.display = infoDiv.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Initial load
+        loadAPI();
     </script>
 </body>
 </html> 
