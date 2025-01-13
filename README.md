@@ -78,17 +78,34 @@ The UI is customizable through the CSS section in the `index.html` file. Key sty
 
 ### Configuration Options
 
-The API list is configured in the `index.html` file. The `API_LIST` array contains the API specifications. Each API specification is an object with a `name` and `url` property.
+The API list is configured in the `index.html` file. The `API_LIST` array contains the API specifications. Each API specification is an object with the following properties:
 
 ```javascript
 const API_LIST = [
   {
-    name: "This is the Petstore API",
+    name: "Petstore API",
     url: "https://petstore3.swagger.io/api/v3/openapi.json",
+    description:
+      "This is the Swagger Petstore API, a sample API that demonstrates OpenAPI specification features.",
+    maintainer: {
+      name: "Swagger Team",
+      email: "swagger@example.com",
+    },
   },
   // Add more APIs as needed
 ];
 ```
+
+Each API configuration supports:
+
+- `name`: Display name for the API
+- `url`: URL to the OpenAPI specification JSON/YAML
+- `description`: A detailed description of the API's purpose and features
+- `maintainer`: Contact information for the API maintainer
+  - `name`: Maintainer's name
+  - `email`: Maintainer's email address
+
+The description and maintainer information can be viewed by clicking the info icon (i) next to the API selector.
 
 ## Contributing
 

@@ -228,12 +228,16 @@
 
             // Update API info
             document.getElementById('api-description').textContent = selectedApi.description;
-            document.getElementById('api-maintainer').innerHTML = `Maintainer: <a href="mailto:${selectedApi.maintainer.email}">${selectedApi.maintainer.name}</a>`;
+            document.getElementById('api-maintainer').innerHTML = `Email Maintainer: <a href="mailto:${selectedApi.maintainer.email}">${selectedApi.maintainer.name}</a>`;
         }
 
         function toggleInfo() {
             const infoDiv = document.querySelector('.api-info');
-            infoDiv.style.display = infoDiv.style.display === 'none' ? 'block' : 'none';
+            if (infoDiv.style.display === '' || infoDiv.style.display === 'none') {
+                infoDiv.style.display = 'block';
+            } else {
+                infoDiv.style.display = 'none';
+            }
         }
 
         // Initial load

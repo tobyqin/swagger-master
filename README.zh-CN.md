@@ -78,17 +78,34 @@
 
 ### 配置选项
 
-API 列表在 `index.html` 文件中配置。`API_LIST` 数组包含 API 规范配置，每个配置项包含 `name` 和 `url` 属性。
+API 列表在 `index.html` 文件中配置。`API_LIST` 数组包含 API 规范配置，每个配置项包含以下属性：
 
 ```javascript
 const API_LIST = [
   {
     name: "Petstore API",
     url: "https://petstore3.swagger.io/api/v3/openapi.json",
+    description:
+      "这是 Swagger Petstore API，一个用于演示 OpenAPI 规范特性的示例 API。",
+    maintainer: {
+      name: "Swagger 团队",
+      email: "swagger@example.com",
+    },
   },
   // 在这里添加更多 API
 ];
 ```
+
+每个 API 配置支持：
+
+- `name`: API 的显示名称
+- `url`: OpenAPI 规范的 JSON/YAML 文件地址
+- `description`: API 的详细描述，包括用途和特性
+- `maintainer`: API 维护者的联系信息
+  - `name`: 维护者姓名
+  - `email`: 维护者邮箱
+
+点击 API 选择器旁边的信息图标（i）可以查看 API 的描述和维护者信息。
 
 ## 参与贡献
 
