@@ -107,6 +107,43 @@ const API_LIST = [
 
 点击 API 选择器旁边的信息图标（i）可以查看 API 的描述和维护者信息。
 
+## 常见问题
+
+### 如何解决 CORS（跨源资源共享）错误？
+
+如果你看到类似 "Failed to load API definition" 或 "Possible cross-origin (CORS) issue" 的错误，可以尝试以下解决方案：
+
+1. **配置后端服务器**（生产环境推荐）
+
+   - 在 API 服务器上配置允许 CORS 请求的响应头：
+
+   ```
+   Access-Control-Allow-Origin: *  # 或者你的 Swagger Master 域名
+   Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS
+   Access-Control-Allow-Headers: *
+   ```
+
+   - 这是生产环境中最安全和推荐的解决方案
+
+2. **使用代理服务器**（生产环境备选）
+
+   - 设置代理服务器（如 Nginx）转发请求并添加 CORS 响应头
+   - Nginx 配置示例：
+
+   ```nginx
+   location /api/ {
+       proxy_pass http://your-api-server/;
+       add_header 'Access-Control-Allow-Origin' '*';
+       add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS';
+       add_header 'Access-Control-Allow-Headers' '*';
+   }
+   ```
+
+3. **使用浏览器插件**（仅用于开发环境）
+   - 安装禁用 CORS 的浏览器插件（如 Chrome 的 "CORS Unblock"）
+   - ⚠️ 警告：此方法仅用于开发和测试环境
+   - 不需要时请禁用插件以确保安全
+
 ## 参与贡献
 
 欢迎提交 Pull Request 来贡献代码。如果要进行重大更改，请先开 Issue 讨论您想要改变的内容。

@@ -107,6 +107,43 @@ Each API configuration supports:
 
 The description and maintainer information can be viewed by clicking the info icon (i) next to the API selector.
 
+## FAQ
+
+### How to fix CORS (Cross-Origin Resource Sharing) errors?
+
+If you see errors like "Failed to load API definition" or "Possible cross-origin (CORS) issue", you can try one of these solutions:
+
+1. **Configure Backend Server** (Recommended for Production)
+
+   - Configure your API server to allow CORS requests by adding appropriate headers:
+
+   ```
+   Access-Control-Allow-Origin: *  # Or your Swagger Master domain
+   Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS
+   Access-Control-Allow-Headers: *
+   ```
+
+   - This is the most secure and recommended solution for production environments
+
+2. **Use a Proxy Server** (Alternative for Production)
+
+   - Set up a proxy server (e.g., Nginx) to forward requests and add CORS headers
+   - Example Nginx configuration:
+
+   ```nginx
+   location /api/ {
+       proxy_pass http://your-api-server/;
+       add_header 'Access-Control-Allow-Origin' '*';
+       add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS';
+       add_header 'Access-Control-Allow-Headers' '*';
+   }
+   ```
+
+3. **Use Browser Extensions** (Development Only)
+   - Install CORS-disabling browser extensions (e.g., "CORS Unblock" for Chrome)
+   - ⚠️ Warning: Only use this method for development/testing
+   - Disable the extension when not needed for security reasons
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
