@@ -150,7 +150,7 @@
 <body>
     <div class="api-selector">
         <i class="fas fa-info-circle info-icon" title="Click to view API details" onclick="toggleInfo()"></i>
-        <label for="api-select">Welcome to <a href="https://github.com/tobyqin/swagger-master" target="_blank" style="color: #49cc90; text-decoration: none;">Swagger Master</a>, view API:</label>
+        <label for="api-select">Welcome to <a href="https://github.com/tobyqin/swagger-master" target="_blank" style="color: #49cc90; text-decoration: none;">Swagger Master</a>, view:</label>
         <select id="api-select" onchange="loadAPI()">
         </select>
     </div>
@@ -167,18 +167,45 @@
     <script src="https://unpkg.com/swagger-ui-dist@5.11.8/swagger-ui-standalone-preset.js"></script>
     
     <script>
-        // Populate select options
+        // Helper function to convert API name to URL-friendly string
+        function nameToUrlParam(name) {
+            return name.toLowerCase()
+                .replace(/[^a-z0-9]+/g, '-')  // Replace special chars with dash
+                .replace(/^-+|-+$/g, '');     // Remove leading/trailing dashes
+        }
+
+        // Helper function to get URL query parameter
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // Helper function to update URL without reloading
+        function updateUrl(view) {
+            const newUrl = new URL(window.location.href);
+            newUrl.searchParams.set('view', view);
+            window.history.pushState({}, '', newUrl);
+        }
+
+        // Populate select options and select initial API
         const select = document.getElementById('api-select');
+        const viewParam = getQueryParam('view');
+        
         API_LIST.forEach(api => {
             const option = document.createElement('option');
             option.value = api.url;
             option.textContent = api.name;
             select.appendChild(option);
+
+            // If URL has matching view parameter, select this API
+            if (viewParam === nameToUrlParam(api.name)) {
+                option.selected = true;
+            }
         });
 
         // Initialize Swagger UI configuration
         let ui = SwaggerUIBundle({
-            url: API_LIST[0].url,
+            url: select.value || API_LIST[0].url,
             dom_id: '#swagger-ui',
             deepLinking: true,
             presets: [
@@ -200,6 +227,9 @@
                 alert('Invalid API URL');
                 return;
             }
+
+            // Update URL with the selected API name
+            updateUrl(nameToUrlParam(selectedApi.name));
 
             ui = SwaggerUIBundle({
                 url: selectedUrl,
